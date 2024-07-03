@@ -10,6 +10,7 @@ private:
     std::string m_movie_rating;
     size_t m_number_of_times_watched;
 public:
+    Movie();
     Movie(std::string name, std::string rating, size_t watch_count);
     Movie(const Movie& source);
     const void display();

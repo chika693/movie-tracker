@@ -1,7 +1,8 @@
 #include <iostream>
 #include <limits>
 #include <string>
-#include "Movies.h"
+#include "LinkedList.h"
+
 
 void check_if_user_watch_count_input_is_valid(size_t& watched_count);
 void get_movie_title_from_user_and_store_in_memory(std::string& movie_title);
@@ -19,17 +20,18 @@ int main(int argc, char* argv[])
         std::cout << "To select a function, press the corresponding letter" << std::endl;
         std::cout << std::endl;
 
-        std::cout << "Add a movie: A" << std::endl;
-        std::cout << "Remove a movie: R" << std::endl;
-        std::cout << "Get the number of movies added into your tracker: G" << std::endl;
-        std::cout << "View your movies: V" << std::endl;
-        std::cout << "Increase movie watch count: E" << std::endl;
-        std::cout << "Quit: Q" << std::endl;
+        std::cout << "Add a movie to the tracker? Press 'a'." << std::endl;
+        std::cout << "View movies in the tracker? Press 'v'." << std::endl;
+        std::cout << "Remove a movie from the tracker? Press 'r'" << std::endl;
+        std::cout << "Get the number of movies in your tracker? 'g'" << std::endl;
+        std::cout << "Edit an entry? Press 'e'" << std::endl;
+        std::cout << "Quit the program? Press 'q'." << std::endl;
         std::cout << std::endl; 
         std::cout << "What would you like to do? " << std::endl;
         std::cin >> option;
 
-        static Movies movie_container_obj = Movies();
+/*         static Movies movie_container_obj = Movies(); */
+        static LinkedList movie_container_obj_linked_list;
     
         switch(option)
         {
@@ -39,7 +41,9 @@ int main(int argc, char* argv[])
                 std::cout << "-------------------------- ADDING A MOVIE ----------------------------" << std::endl;
                 std::string movie_name;
                 get_movie_title_from_user_and_store_in_memory(movie_name);
-                if (movie_container_obj.check_if_movie_title_in_tracker(movie_name))
+
+                    // trying to see if this 'check_if_movie_title_in_tracker' function works well.
+                if (movie_container_obj_linked_list.check_if_movie_title_in_tracker(movie_name) == true)
                 {
                     std::cout << "-------------------------- RESULT ----------------------------" << std::endl;
                     std::cout << "This movie already exists in your tracker." << std::endl;
@@ -52,17 +56,14 @@ int main(int argc, char* argv[])
                 check_if_user_movie_rating_input_is_valid(movie_rating);
 
                 size_t watched_count;
-                bool valid_input = false;
-                std::cout << "Enter number of times (an integer -> yourInput >= 0) you've watched the movie: ";
-                
                 check_if_user_watch_count_input_is_valid(watched_count);
 
-                size_t previous_size_of_tracker = movie_container_obj.get_size();
-                movie_container_obj.add(movie_name, movie_rating, watched_count);
+                size_t previous_size_of_tracker = movie_container_obj_linked_list.get_size();
+                movie_container_obj_linked_list.append(movie_name, movie_rating, watched_count);
 
                 std::cout << std::endl;
                 std::cout << "-------------------------- RESULT ----------------------------" << std::endl;
-                movie_container_obj.get_size() > previous_size_of_tracker ? std::cout << "ADDED " << "\"" << movie_name << "\"" << " TO THE TRACKER." << std::endl : std::cout << "MOVIE WAS NOT ADDED." << std::endl;
+                movie_container_obj_linked_list.get_size() > previous_size_of_tracker ? std::cout << "ADDED " << "\"" << movie_name << "\"" << " TO THE TRACKER." << std::endl : std::cout << "MOVIE WAS NOT ADDED." << std::endl;
                 std::cout << std::endl;
             }
                 break;
@@ -72,13 +73,14 @@ int main(int argc, char* argv[])
             {
                 std::string movie_title;
                 get_movie_title_from_user_and_store_in_memory(movie_title);
-                if (movie_container_obj.check_if_movie_title_in_tracker(movie_title))
+                if (movie_container_obj_linked_list.check_if_movie_title_in_tracker(movie_title))
                 {
                     std::cout << "-------------------------- RESULT ----------------------------" << std::endl;
-                    movie_container_obj.remove_movie_from_container(movie_title);
+                            // We run into a segmentation fault here.
+                    movie_container_obj_linked_list.remove_movie_from_container(movie_title);
                 } else {
                     std::cout << "-------------------------- RESULT ----------------------------" << std::endl;
-                    std::cout << "The movie titled: \"" << movie_title << "\" does not exist in your tracker." << std::endl;
+                    std::cout << "There is no move titled: \"" << movie_title << "\" in your tracker." << std::endl;
                 }
                 std::cout << std::endl;
                 break;
@@ -88,13 +90,13 @@ int main(int argc, char* argv[])
             case 'V':
             {
                 std::cout << "-------------------------- VIEWING THE MOVIES IN YOUR TRACKER ----------------------------" << std::endl;
-                if (movie_container_obj.get_size() == 0) 
+                if (movie_container_obj_linked_list.get_size() == 0) 
                     {
                         std::cout << "You have no movies in your tracker." << std::endl; 
                         std::cout << std::endl;
                     }
                 else 
-                        movie_container_obj.display();
+                        movie_container_obj_linked_list.display();
             }
                 break;
 
@@ -105,7 +107,7 @@ int main(int argc, char* argv[])
                 get_movie_title_from_user_and_store_in_memory(movie_title);
 
                 char edit_mode_option;
-                if (movie_container_obj.check_if_movie_title_in_tracker(movie_title))
+                if (movie_container_obj_linked_list.check_if_movie_title_in_tracker(movie_title))
                 {
                     do {
                             std::cout << "-------------------------- EDIT MOVIE ATTRIBUTES... ----------------------------" << std::endl;
@@ -133,7 +135,7 @@ int main(int argc, char* argv[])
                                         std::cout << "There was no change to the title. No change was made." << std::endl;   
                                     } else 
                                     {
-                                        movie_container_obj.change_movie_title(movie_title, new_title);
+                                        movie_container_obj_linked_list.change_movie_title(movie_title, new_title);
                                         std::cout << "-------------------------- RESULT ----------------------------" << std::endl;
                                         std::cout << "Movie originally titled: \"" << movie_title << "\" was sucessfully changed to \"" << new_title << "\"" << std::endl;
                                         movie_title = new_title;
@@ -145,25 +147,19 @@ int main(int argc, char* argv[])
                                 case 'r':
                                 case 'R':
                                 {
-                                    std::string original_movie_rating = movie_container_obj.get_specific_movie_rating(movie_title);
-                                    std::string new_movie_rating;                          
-                                    check_if_user_movie_rating_input_is_valid(new_movie_rating);
-                                    if (original_movie_rating == new_movie_rating)
-                                case 'r':
-                                case 'R':
-                                {
-                                    std::string original_movie_rating = movie_container_obj.get_specific_movie_rating(movie_title);
+                                    std::string original_movie_rating = movie_container_obj_linked_list.get_specific_movie_rating(movie_title);
                                     std::string new_movie_rating;                          
                                     check_if_user_movie_rating_input_is_valid(new_movie_rating);
                                     if (original_movie_rating == new_movie_rating)
                                     {
-                                        std::cout << std::endl;
-                                        break;
+                                        std::cout << "-------------------------- RESULT ----------------------------" << std::endl;
+                                        std::cout << "There was no change to the rating. No change was made." << std::endl;   
+/*                                         break; */
                                     } else 
                                     {
-                                        movie_container_obj.change_movie_rating(movie_title, new_movie_rating);
+                                        movie_container_obj_linked_list.change_movie_rating(movie_title, new_movie_rating);
                                         std::cout << "-------------------------- RESULT ----------------------------" << std::endl;
-                                        std::cout << "Movie rating successfully changed from: \"" << original_movie_rating << "\" to: \"" << movie_container_obj.get_specific_movie_rating(movie_title) << "\"" << std::endl;
+                                        std::cout << "Movie rating successfully changed from: \"" << original_movie_rating << "\" to: \"" << movie_container_obj_linked_list.get_specific_movie_rating(movie_title) << "\"" << std::endl;
                                     }
                                     std::cout << std::endl;
                                 }
@@ -190,15 +186,17 @@ int main(int argc, char* argv[])
                                         std::cout << "What would you like to change the watch count to? ";
                                         check_if_user_watch_count_input_is_valid(new_watch_count);
                                         std::cout << "-------------------------- RESULT ----------------------------" << std::endl;
-                                        movie_container_obj.change_movie_watch_count(movie_title, new_watch_count);
+                                        movie_container_obj_linked_list.change_movie_watch_count(movie_title, new_watch_count);
                                     } else if (change_watch_count_through_option == 'i' || change_watch_count_through_option == 'I')
                                     {
                                         std::cout << "-------------------------- RESULT ----------------------------" << std::endl;
-                                        movie_container_obj.increment_movie_watch_count(movie_title);
+                                        movie_container_obj_linked_list.increment_movie_watch_count(movie_title);
                                     } else if (change_watch_count_through_option == 'd' || change_watch_count_through_option == 'D')
                                     {
+                                        std::cout << "-------------------------- RESULT ----------------------------" << std::endl;
+                                        movie_container_obj_linked_list.decrement_movie_watch_count(movie_title);
+                                    }
                                     std::cout << std::endl;
-                                
                                     break;
 
                                 case 'e':
@@ -222,7 +220,12 @@ int main(int argc, char* argv[])
             case 'g':
             case 'G':
                 std::cout << "-------------------------- NUMBER OF MOVIES IN YOUR TRACKER: ----------------------------" << std::endl;
-                std::cout << movie_container_obj.get_size() << std::endl;
+                if (movie_container_obj_linked_list.get_size() == 0)
+                    std::cout << movie_container_obj_linked_list.get_size() <<  " movies in your tracker." << std::endl;
+                else if (movie_container_obj_linked_list.get_size() == 1)
+                    std::cout << movie_container_obj_linked_list.get_size() << " movie in your tracker." << std::endl;
+                else if (movie_container_obj_linked_list.get_size() > 1)
+                    std::cout << movie_container_obj_linked_list.get_size() << " movies in your tracker." << std::endl;
                 std::cout << std::endl;
                 break;
 
@@ -286,10 +289,5 @@ void get_movie_title_from_user_and_store_in_memory(std::string& movie_title)
     std::cin >> std::ws;
     std::getline(std::cin, movie_title);
     std::cout << std::endl;
-void get_movie_title_from_user_and_store_in_memory(std::string& movie_title)
-{
-    std::cout << "Enter the title of the movie: ";
-    std::cin >> std::ws;
-    std::getline(std::cin, movie_title);
-    std::cout << std::endl;
 }
+

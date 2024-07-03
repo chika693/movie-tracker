@@ -2,6 +2,9 @@
 
 size_t Movie::number_of_movie_objects = 0; 
 
+Movie::Movie()
+: m_movie_name{}, m_movie_rating{}, m_number_of_times_watched{}
+{}
 Movie::Movie(std::string name, std::string rating, size_t watch_count)
 : m_movie_name{name}, m_movie_rating{rating}, m_number_of_times_watched{watch_count}
 { 
@@ -52,22 +55,31 @@ void Movie::set_movie_rating(std::string new_movie_rating)
 
 void Movie::set_number_of_times_watched(size_t new_watch_count)
 {
-    m_number_of_times_watched = new_watch_count;    
-    std::cout << "Watch count has been updated." << std::endl;
+    if (new_watch_count == m_number_of_times_watched)
+    {
+        std::cout << "There was no change to the rating. No change was made." << std::endl;   
+    } else 
+    {
+        size_t original_watch_count = m_number_of_times_watched;
+        m_number_of_times_watched = new_watch_count;    
+        std::cout << "Watch count successfully updated from: " << original_watch_count << " to: " << new_watch_count << std::endl;
+    }
 }
 
 void Movie::increment_number_of_times_watched()
 {
+    size_t original_watch_count = m_number_of_times_watched;
     ++m_number_of_times_watched;
-    std::cout << "Successfully incremented." << std::endl;
+    std::cout << "Successfully incremented from: " << original_watch_count << " to: "<< m_number_of_times_watched << std::endl;
 }
 
 void Movie::decrement_number_of_times_watched()
 {
     if (m_number_of_times_watched >= 1)
     {
+        size_t original_watch_count = m_number_of_times_watched;
         --m_number_of_times_watched;
-        std::cout << "Successfully decremented." << std::endl;
+        std::cout << "Successfully decremented from: " << original_watch_count << " to: "<< m_number_of_times_watched << std::endl;
     }
     else 
         std::cout << "Unable to decrement because number of times watched is already at 0." << std::endl;
