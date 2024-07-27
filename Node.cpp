@@ -1,11 +1,11 @@
 #include "Node.h"
 
 Node::Node()
-: m_data{}, m_next{nullptr}
+:m_next{nullptr}, m_data{}
 { }
 
 Node::Node(std::string movie_title, std::string movie_rating, size_t movie_watch_count)
-: m_data{movie_title, movie_rating, movie_watch_count}, m_next{nullptr}
+:m_next{nullptr}, m_data{movie_title, movie_rating, movie_watch_count} 
 { }
 
 Node* Node::get_next_node()

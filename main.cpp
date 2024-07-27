@@ -1,6 +1,7 @@
 #include <iostream>
 #include <limits>
 #include <string>
+#include <fstream>
 #include "LinkedList.h"
 
 
@@ -30,7 +31,6 @@ int main(int argc, char* argv[])
         std::cout << "What would you like to do? " << std::endl;
         std::cin >> option;
 
-/*         static Movies movie_container_obj = Movies(); */
         static LinkedList movie_container_obj_linked_list;
     
         switch(option)
@@ -252,7 +252,7 @@ void check_if_user_watch_count_input_is_valid(size_t& watched_count)
     bool valid_input = false;
 
     while (!valid_input) {
-        std::cout << "Please enter an integer: ";
+        std::cout << "Please enter (a natural number including 0) the number of times you've watched the movie: ";
         if (std::cin >> watched_count) {
             valid_input = true;                                                                                      
         } else {
