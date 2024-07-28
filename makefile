@@ -1,20 +1,23 @@
 # This makefile for movie_tracker.exe
 
-CPPC = clang++
-CFLAGS = -g -Wall -std=c++17
-LINKER = $(CPPC) $(CFLAGS) -o
-OTHER_LINK_FLAGS =
-BIN= bin/movie_tracker.exe
-OBJS = obj/main.o obj/Movie.o obj/Node.o obj/LinkedList.o
+CPPC=clang++
+CFLAGS=-g -Wall -std=c++17
+LINKER=$(CPPC) $(CFLAGS) -o
+OTHER_FLAGS=
+SRC=src
+OBJ=obj
+BINDIR=bin
+SRCS=$(wildcard $(SRC)/*.cpp) 
+OBJS=$(patsubst $(SRC)/%.cpp, $(OBJ)/%.o, $(SRCS))
+BIN = $(BINDIR)/movie_tracker.exe
 
 all: $(BIN)
 
 $(BIN): $(OBJS)
-	$(LINKER) $(BIN) $(OBJS) $(OTHER_LINK_FLAGS)
+	$(LINKER) $@ $(OBJS)
 
-obj/%.o: src/%.cpp
+$(OBJ)/%.o: $(SRC)/%.cpp
 	$(CPPC) $(CFLAGS) -c $< -o $@
 
 clean:
-	rm -r bin/* obj/*
-
+	rm -r $(BINDIR)/* $(OBJ)/*
