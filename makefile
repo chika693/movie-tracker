@@ -19,7 +19,7 @@ $(TARGET): $(OBJS)
 	@echo "-------------------------------------------"
 	@echo "Compiling the file: $<."
 	@echo "-------------------------------------------"
-	$(CC) $(CFLAGS) -c $<
+	$(CC) $(CFLAGS) -c $< -o $@
 
 clean:
 	rm -rf *.o $(TARGET)
