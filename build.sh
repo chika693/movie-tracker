@@ -1,5 +1,5 @@
 #!/bin/bash
 
 make
-./movie_tracker.exe
+./bin/movie_tracker.exe
 

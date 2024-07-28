@@ -1,31 +1,20 @@
 # This makefile for movie_tracker.exe
 
-CC = clang++
+CPPC = clang++
 CFLAGS = -g -Wall -std=c++17
-LINKER = $(CC) $(CFLAGS) -o
+LINKER = $(CPPC) $(CFLAGS) -o
 OTHER_LINK_FLAGS =
-TARGET = movie_tracker.exe
-OBJS = main.o Movie.o Node.o LinkedList.o
+BIN= bin/movie_tracker.exe
+OBJS = obj/main.o obj/Movie.o obj/Node.o obj/LinkedList.o
 
-all: $(TARGET)
+all: $(BIN)
 
-$(TARGET): $(OBJS)
-	@echo "-------------------------------------------"
-	@echo "Linking and creating program executable."
-	@echo "-------------------------------------------"
-	$(LINKER) $(TARGET) $(OBJS) $(OTHER_LINK_FLAGS)
+$(BIN): $(OBJS)
+	$(LINKER) $(BIN) $(OBJS) $(OTHER_LINK_FLAGS)
 
-%.o: %.cpp
-	@echo "--------------------------------------------------"
-	@echo "Compiling the file: $< to make the object file: $@"
-	@echo "--------------------------------------------------"
-	$(CC) $(CFLAGS) -c $< -o $@
+obj/%.o: src/%.cpp
+	$(CPPC) $(CFLAGS) -c $< -o $@
 
 clean:
-	rm -rf *.o $(TARGET)
+	rm -r bin/* obj/*
 
-# Dependency chain
-main.o			:	main.cpp
-Movie.o			:	Movie.cpp
-Node.o			:	Node.cpp
-LinkedList.o	:	LinkedList.cpp
