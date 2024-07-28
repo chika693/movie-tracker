@@ -16,9 +16,9 @@ $(TARGET): $(OBJS)
 	$(LINKER) $(TARGET) $(OBJS) $(OTHER_LINK_FLAGS)
 
 %.o: %.cpp
-	@echo "-------------------------------------------"
-	@echo "Compiling the file: $<."
-	@echo "-------------------------------------------"
+	@echo "--------------------------------------------------"
+	@echo "Compiling the file: $< to make the object file: $@"
+	@echo "--------------------------------------------------"
 	$(CC) $(CFLAGS) -c $< -o $@
 
 clean:

@@ -12,7 +12,7 @@ void check_if_user_movie_rating_input_is_valid(std::string& movie_rating);
 int main(int argc, char* argv[])
 {
     char option;
-    std::cout << "Welcome to your movie database!" << std::endl;
+    std::cout << "Welcome to your movie tracker!" << std::endl;
     do
     {
 
